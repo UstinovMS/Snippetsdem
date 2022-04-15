@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>ProductEditCSS</Title>
+      <Shortcut>ProductEditCSS</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="CSharp">
+        <![CDATA[
+                private Product ProductValue { get; set; }
+
+        public ProductEdit()
+        {
+            InitializeComponent();
+        }
+
+        public ProductEdit(Product product)
+        {
+            InitializeComponent();
+
+            tbxArticle.Text = product.ProductArticleNumber;
+
+            comboName.ItemsSource = App.db.TypeProducts.ToList();
+            comboName.DisplayMemberPath = "Type";
+            comboName.SelectedValuePath = "TypeId";
+            comboName.SelectedValue = product.ProductName;
+
+            tbxDescription.Text = product.ProductDescription;
+            tbxCost.Text = product.ProductCost.ToString();
+            tbxCountInStock.Text = product.ProductQuantityInStock.ToString();
+            tbxDiscount.Text = product.ProductDiscountAmount.ToString();
+            tbxMaxDiscount.Text = product.ProductMaxDiscount.ToString();
+
+            comboCategory.ItemsSource = App.db.Categories.ToList();
+            comboCategory.DisplayMemberPath = "Category1";
+            comboCategory.SelectedValuePath = "CategoryId";
+            comboCategory.SelectedValue = product.ProductCategory;
+
+            comboManufacturer.ItemsSource = App.db.Manufacturers.ToList();
+            comboManufacturer.DisplayMemberPath = "Manufacturer1";
+            comboManufacturer.SelectedValuePath = "ManufacturerId";
+            comboManufacturer.SelectedValue = product.ProductManufacturer;
+
+            comboProvider.ItemsSource = App.db.Providers.ToList();
+            comboProvider.DisplayMemberPath = "Provider1";
+            comboProvider.SelectedValuePath = "ProviderId";
+            comboProvider.SelectedValue = product.ProductProvider;
+
+            Image.Source = LoadImage(product.ProductPhoto);
+
+            ProductValue = product;
+
+        }
+
+        private void buttonEditImage_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Image |*.png; *.jpg; *.jpeg";
+            if (ofd.ShowDialog() == true)
+            {
+                var _mainImageData = File.ReadAllBytes(ofd.FileName);
+                ProductValue.ProductPhoto = _mainImageData;
+                Image.Source = LoadImage(ProductValue.ProductPhoto);
+            }
+        }
+
+        private static BitmapImage LoadImage(byte[] imageData)
+        {
+            if (imageData == null || imageData.Length == 0) return null;
+            var image = new BitmapImage();
+            using (var mem = new MemoryStream(imageData))
+            {
+                mem.Position = 0;
+                image.BeginInit();
+                image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.UriSource = null;
+                image.StreamSource = mem;
+                image.EndInit();
+            }
+            image.Freeze();
+            return image;
+        }
+
+        private void buttonEdit_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                var currentProduct = App.db.Products.Find(ProductValue.ProductArticleNumber);
+                currentProduct.ProductCategory = comboCategory.SelectedIndex + 1;
+                currentProduct.ProductCost = Convert.ToDecimal(tbxCost.Text);
+                currentProduct.ProductDescription = tbxDescription.Text;
+
+                if (Convert.ToDecimal(tbxDiscount.Text) < Convert.ToDecimal(tbxMaxDiscount.Text))
+                {
+                    currentProduct.ProductDiscountAmount = Convert.ToDecimal(tbxDiscount.Text);
+                    currentProduct.ProductTotalCost = Convert.ToDecimal(tbxCost.Text) - Convert.ToDecimal(tbxCost.Text) * (Convert.ToDecimal(tbxDiscount.Text) / 100);
+                }
+                else
+                {
+                    currentProduct.ProductDiscountAmount = Convert.ToDecimal(tbxMaxDiscount.Text);
+                    currentProduct.ProductTotalCost = Convert.ToDecimal(tbxCost.Text) - Convert.ToDecimal(tbxCost.Text) * (Convert.ToDecimal(tbxMaxDiscount.Text) / 100);
+                }
+                currentProduct.ProductMaxDiscount = Convert.ToDecimal(tbxMaxDiscount.Text);
+                currentProduct.ProductManufacturer = comboManufacturer.SelectedIndex + 1;
+                currentProduct.ProductName = comboName.SelectedIndex + 1;
+                currentProduct.ProductPhoto = ProductValue.ProductPhoto;
+                currentProduct.ProductProvider = comboProvider.SelectedIndex + 1;
+                currentProduct.ProductQuantityInStock = Convert.ToInt32(tbxCountInStock.Text);
+
+                if(Convert.ToInt32(tbxCountInStock.Text)>0)
+                {
+                    currentProduct.ProductStatus = 1;
+                }
+                else
+                    currentProduct.ProductStatus = 2;
+                App.db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка при авторизации");
+            }
+            finally
+            {
+                NavigationService.GoBack();
+            }
+        }
+        ]]>
+      </Code>
+      <Imports>
+        <Import>
+          <Namespace>System.IO</Namespace>
+        </Import>
+      </Imports>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>

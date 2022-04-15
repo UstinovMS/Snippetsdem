@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>ProductEdit</Title>
+      <Shortcut>ProductEdit</Shortcut>
+    </Header>
+    <Snippet>
+      <Code Language="XAML">
+        <![CDATA[
+         x:Name="Edit"
+      Title="Редактирования товара">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*">
+            </RowDefinition>
+            <RowDefinition Height="80"> 
+            </RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Grid.Column="0" Orientation="Horizontal" Grid.RowSpan="2">
+            <StackPanel  Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,10,0">
+                <TextBlock  Style="{StaticResource BlockCommon}" Width="auto" >Артикуль</TextBlock>
+                <TextBox x:Name="tbxArticle" Margin="0,0,0,0" MaxWidth="150">
+                </TextBox>
+                <TextBlock  Style="{StaticResource BlockCommon}" Width="auto" >Названик</TextBlock>
+                <ComboBox Width="auto" Name="comboName" MaxWidth="150"></ComboBox>
+                <TextBlock  Style="{StaticResource BlockCommon}"  Width="auto" >Описание</TextBlock>
+                <TextBox x:Name="tbxDescription" Margin="0,0,0,0" MaxWidth="150">
+                </TextBox>
+                <TextBlock  Style="{StaticResource BlockCommon}" Width="auto" >Категория</TextBlock>
+                <ComboBox Width="auto" Name="comboCategory" MaxWidth="150"></ComboBox>
+                <TextBlock  Style="{StaticResource BlockCommon}" Width="auto" >Производитель</TextBlock>
+                <ComboBox Width="auto" Name="comboManufacturer" MaxWidth="150"></ComboBox>
+            </StackPanel>
+            <StackPanel  Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,10,0">
+                <TextBlock  Style="{StaticResource BlockCommon}" Width="auto" >Стоимость</TextBlock>
+                <TextBox x:Name="tbxCost" Margin="0,0,0,0"  MaxWidth="150">
+                </TextBox>
+                <TextBlock  Style="{StaticResource BlockCommon}" Width="auto" >Действующая скидка</TextBlock>
+                <TextBox x:Name="tbxDiscount" Margin="0,0,0,0" MaxWidth="150" >
+                </TextBox>
+                <TextBlock  Style="{StaticResource BlockCommon}" Width="auto" >Максимальная скидка</TextBlock>
+                <TextBox x:Name="tbxMaxDiscount" Margin="0,0,0,0" MaxWidth="150">
+                </TextBox>
+                <TextBlock  Style="{StaticResource BlockCommon}" Width="auto" >Кол-во на складе</TextBlock>
+                <TextBox x:Name="tbxCountInStock" Margin="0,0,0,0" MaxWidth="150">
+                </TextBox>
+                <TextBlock  Style="{StaticResource BlockCommon}" Width="auto" >Постовщик</TextBlock>
+                <ComboBox Width="auto" Name="comboProvider" MaxWidth="150"></ComboBox>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
+            <Image x:Name="Image"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
+            <Button x:Name="buttonEditImage" Content="Изменить" Click="buttonEditImage_Click" />
+            <Button Grid.Column="1" Grid.Row="1" x:Name="buttonEdit" Content="Сохранить товар" Click="buttonEdit_Click" />
+        </StackPanel>
+    </Grid>
+        ]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
